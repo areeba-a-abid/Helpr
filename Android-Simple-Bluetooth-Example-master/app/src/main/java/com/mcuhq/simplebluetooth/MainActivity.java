@@ -65,6 +65,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+//        keep track of what screen you are on
+        int screen = 0;
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -101,13 +106,33 @@ public class MainActivity extends AppCompatActivity {
 
 //                        System.out.println(msg.obj);
                         String[] values = readMessage.split("(,)");
+//                        values[5] = "0";
                         System.out.println(Arrays.toString(values));
 
-                        mBTArrayAdapter.add(Arrays.toString(values));
-//                        mBTArrayAdapter.add(values[0]); // x
-//                        mBTArrayAdapter.add(values[1]); // y
-//                        mBTArrayAdapter.add(values[2]); // joystick press
+//                        mBTArrayAdapter.add(Arrays.toString(values));
+                        mBTArrayAdapter.add(values[0]); // x
+                        mBTArrayAdapter.add(values[1]); // y
+                        mBTArrayAdapter.add(values[2]); // joystick press
+                        mBTArrayAdapter.add(values[3]); // Yes
+                        mBTArrayAdapter.add(values[4]); // No
+
+
+
 //                        System.out.println(readMessage);
+
+                        // checking if the joystick is pressed first
+                        if (Integer.parseInt(values[2]) == 1) {
+                            if (Integer.parseInt(values[0]) < 500 && Integer.parseInt(values[1]) < 500) {
+                                System.out.println("Quadrant 1 - Upper Left");
+                            } else if (Integer.parseInt(values[0]) > 524 && Integer.parseInt(values[1]) < 500) {
+                                System.out.println("Quadrant 2 - Upper Right");
+                            } else if (Integer.parseInt(values[0]) > 500 && Integer.parseInt(values[1]) > 500) {
+                                System.out.println("Quadrant 3 - Lower Right");
+                            } else if (Integer.parseInt(values[0]) < 500 && Integer.parseInt(values[1]) > 524) {
+                                System.out.println("Quadrant 4 - Lower Left");
+                            }
+                        }
+
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
