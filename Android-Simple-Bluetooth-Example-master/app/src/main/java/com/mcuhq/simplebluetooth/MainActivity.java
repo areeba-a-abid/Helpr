@@ -29,10 +29,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
-
-import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -102,42 +101,61 @@ public class MainActivity extends AppCompatActivity {
                     String readMessage = null;
                     try {
                         readMessage = new String((byte[]) msg.obj, "UTF-8");
-//                        System.out.println(readMessage);
-
-//                        System.out.println(msg.obj);
                         String[] values = readMessage.split("(,)");
+//                        System.out.println(readMessage);
+                        if (values.length != 5) {
+                            return;
+                        }
+//                        System.out.println(msg.obj);
+
 //                        values[5] = "0";
-                        System.out.println(Arrays.toString(values));
+//                        System.out.println(Arrays.toString(values));
 
 //                        mBTArrayAdapter.add(Arrays.toString(values));
-                        mBTArrayAdapter.add(values[0]); // x
-                        mBTArrayAdapter.add(values[1]); // y
-                        mBTArrayAdapter.add(values[2]); // joystick press
-                        mBTArrayAdapter.add(values[3]); // Yes
-                        mBTArrayAdapter.add(values[4]); // No
+//                        mBTArrayAdapter.add(values[0]); // x
+//                        mBTArrayAdapter.add(values[1]); // y
+//                        mBTArrayAdapter.add(values[2]); // joystick press
+//                        mBTArrayAdapter.add(values[3]); // Yes
+//                        mBTArrayAdapter.add(values[4]); // No
 
 
 
 //                        System.out.println(readMessage);
+                        if (Integer.parseInt(values[2]) == 1) {
+                            Intent intent = new Intent(MainActivity.this, Homie.class);
+                            startActivity(intent);
 
+                        }
                         // checking if the joystick is pressed first
                         if (Integer.parseInt(values[2]) == 1) {
                             if (Integer.parseInt(values[0]) < 500 && Integer.parseInt(values[1]) < 500) {
                                 System.out.println("Quadrant 1 - Upper Left");
+                                Intent intent = new Intent(MainActivity.this, Quadrantone.class);
+                                startActivity(intent);
                             } else if (Integer.parseInt(values[0]) > 524 && Integer.parseInt(values[1]) < 500) {
                                 System.out.println("Quadrant 2 - Upper Right");
+                                Intent intent = new Intent(MainActivity.this, Quadranttwo.class);
+                                startActivity(intent);
                             } else if (Integer.parseInt(values[0]) > 500 && Integer.parseInt(values[1]) > 500) {
                                 System.out.println("Quadrant 3 - Lower Right");
+                                Intent intent = new Intent(MainActivity.this, Quadrantfour.class);
+                                startActivity(intent);
                             } else if (Integer.parseInt(values[0]) < 500 && Integer.parseInt(values[1]) > 524) {
                                 System.out.println("Quadrant 4 - Lower Left");
+                                Intent intent = new Intent(MainActivity.this, Quadrantthree.class);
+                                startActivity(intent);
                             }
+                        }
+                        if (Integer.parseInt(values[3]) == 1) {
+                            Intent intent = new Intent(MainActivity.this, Homie.class);
+                            startActivity(intent);
                         }
 
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
                     mReadBuffer.setText(readMessage);
-                    Toast.makeText(getApplicationContext(), readMessage, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), readMessage, Toast.LENGTH_SHORT).show();
 
                 }
 
